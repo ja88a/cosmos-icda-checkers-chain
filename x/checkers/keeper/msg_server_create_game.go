@@ -9,12 +9,12 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// Handling of the message Create New Game
 func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (*types.MsgCreateGameResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// Handling the message
-
-	
+	// Build up the Game object
+	// get the sytem info nextIndex from the keeper attached to msgServer
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
 	if !found {
 		panic("SystemInfo not found")
@@ -30,7 +30,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		Red:   msg.Red,
 	}
 
-	// Validate the input game
+	// Validate the game inputs
 	err := storedGame.Validate()
 	if err != nil {
 		return nil, err
