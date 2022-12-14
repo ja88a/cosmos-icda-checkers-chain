@@ -70,3 +70,15 @@ docker-init-gui:
 
 docker-run-gui:
 	docker exec -it $(DOCKER_LABEL) bash -c "cd vue && npm run dev -- --host"
+
+ALICE = $(checkersd keys show alice -a)
+BOB = $(checkersd keys show bob -a)
+
+shell-addr:
+	# export alice=$(checkersd keys show alice -a)
+	export alice=$(ALICE)
+	@echo alice: $(ALICE)
+
+	# export bob=$(checkersd keys show bob -a)
+	export bob=$(BOB)
+	@echo bob: $(BOB)
