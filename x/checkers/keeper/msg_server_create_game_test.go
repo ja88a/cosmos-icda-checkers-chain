@@ -13,9 +13,9 @@ import (
 )
 
 func setupMsgServerCreateGame(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context) {
-    k, ctx := keepertest.CheckersKeeper(t)
-    checkers.InitGenesis(ctx, *k, *types.DefaultGenesis())
-    return keeper.NewMsgServerImpl(*k), *k, sdk.WrapSDKContext(ctx)
+	k, ctx := keepertest.CheckersKeeper(t)
+	checkers.InitGenesis(ctx, *k, *types.DefaultGenesis())
+	return keeper.NewMsgServerImpl(*k), *k, sdk.WrapSDKContext(ctx)
 }
 
 func TestCreateGame(t *testing.T) {

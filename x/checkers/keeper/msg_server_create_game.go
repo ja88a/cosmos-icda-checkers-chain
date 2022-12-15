@@ -1,11 +1,11 @@
 package keeper
 
 import (
-	"strconv"
 	"context"
+	"strconv"
 
-	"github.com/alice/checkers/x/checkers/types"
 	"github.com/alice/checkers/x/checkers/rules"
+	"github.com/alice/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -38,7 +38,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 
 	// Store it
 	k.Keeper.SetStoredGame(ctx, storedGame) //store
-	systemInfo.NextId++ // persist in memory
+	systemInfo.NextId++                     // persist in memory
 	k.Keeper.SetSystemInfo(ctx, systemInfo) // store
 
 	// Interact
