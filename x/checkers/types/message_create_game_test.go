@@ -38,3 +38,4 @@ func TestMsgCreateGame_ValidateBasic(t *testing.T) {
 		})
 	}
 }
+

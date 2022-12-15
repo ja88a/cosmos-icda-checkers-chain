@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/alice/checkers/x/checkers/rules"
 	"github.com/alice/checkers/x/checkers/types"
@@ -58,12 +59,23 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		return nil, sdkerrors.Wrapf(types.ErrWrongMove, moveErr.Error())
 	}
 
-	// Prepare & store
+	// Effects - Prepare & store
 	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
 	k.Keeper.SetStoredGame(ctx, storedGame)
 
-	// Result
+	// Interact - emit event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.MovePlayedEventType,
+			sdk.NewAttribute(types.MovePlayedEventCreator, msg.Creator),
+			sdk.NewAttribute(types.MovePlayedEventGameIndex, msg.GameIndex),
+			sdk.NewAttribute(types.MovePlayedEventCapturedX, strconv.FormatInt(int64(captured.X), 10)),
+			sdk.NewAttribute(types.MovePlayedEventCapturedY, strconv.FormatInt(int64(captured.Y), 10)),
+			sdk.NewAttribute(types.MovePlayedEventWinner, rules.PieceStrings[game.Winner()]),
+		),
+	)
+
+	// Interact - return move's result
 	//return &types.MsgPlayMoveResponse{}, nil
 	return &types.MsgPlayMoveResponse{
 		CapturedX: int32(captured.X), // int32 so it can be `-1`
