@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgCreateGame_ValidateBasic(t *testing.T) {
+func TestMsgRejectGame_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgCreateGame
+		msg  MsgRejectGame
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgCreateGame{
+			msg: MsgRejectGame{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgCreateGame{
+			msg: MsgRejectGame{
 				Creator: sample.AccAddress(),
 			},
 		},
