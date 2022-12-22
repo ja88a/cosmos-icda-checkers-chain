@@ -74,13 +74,12 @@ docker-run-gui:
 ALICE = $(checkersd keys show alice -a)
 BOB = $(checkersd keys show bob -a)
 
-shell-addr:
-	#export alice = checkersd keys show alice -a
-	#@echo alice: $(alice)
-	# export alice=$(checkersd keys show alice -a)
-	#export alice=$(ALICE)
-	@echo alice: $(ALICE)
+shexport-addr:
+	export alice=$(checkersd keys show alice -a)
+	@echo alice: $(alice)
+	export alice2=$(ALICE)
+	@echo ALICE: $(alice2)
 
-	export bob=$(checkersd keys show bob -a)
-	#export bob=$(BOB)
+	#export bob=$(checkersd keys show bob -a)
+	export bob=$(BOB)
 	@echo bob: $(BOB)
