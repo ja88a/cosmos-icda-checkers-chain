@@ -66,14 +66,15 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	}
 	k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
 
-	// Effects - Prepare & store
+	// EFFECTS - Prepare & store
 	storedGame.MoveCount++
+	storedGame.Deadline = types.FormatDeadline(types.GetNextDeadline(ctx))
 	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
 	k.Keeper.SetStoredGame(ctx, storedGame)
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
-	
-	// Interact - emit event
+
+	// INTERACT - emit event
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.MovePlayedEventType,
 			sdk.NewAttribute(types.MovePlayedEventCreator, msg.Creator),
