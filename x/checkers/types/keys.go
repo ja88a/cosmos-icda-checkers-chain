@@ -47,3 +47,8 @@ const (
     GameRejectedEventCreator   = "creator"
     GameRejectedEventGameIndex = "game-index"
 )
+
+const (
+	NoFifoIndex = "-1"
+)
+

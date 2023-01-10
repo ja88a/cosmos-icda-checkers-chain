@@ -32,7 +32,13 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	}
 
 	// EFFECTS
+	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
+	if !found {
+		panic("SystemInfo not found")
+	}
+	k.Keeper.RemoveFromFifo(ctx, &storedGame, &systemInfo)
 	k.Keeper.RemoveStoredGame(ctx, msg.GameIndex)
+	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
 	// INTERACTIONS
 	ctx.EventManager().EmitEvent(
@@ -41,6 +47,6 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 			sdk.NewAttribute(types.GameRejectedEventGameIndex, msg.GameIndex),
 		),
 	)
-	
+
 	return &types.MsgRejectGameResponse{}, nil
 }

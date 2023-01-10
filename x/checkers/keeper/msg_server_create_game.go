@@ -29,6 +29,8 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		Black: msg.Black,
 		Red:   msg.Red,
 		MoveCount: 0,
+		BeforeIndex: types.NoFifoIndex,
+	    AfterIndex:  types.NoFifoIndex,
 	}
 
 	// Validate the game inputs
@@ -36,6 +38,9 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	if err != nil {
 		return nil, err
 	}
+
+	// Store in the Fifo at tail
+	k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
 
 	// Store it
 	k.Keeper.SetStoredGame(ctx, storedGame) //store
