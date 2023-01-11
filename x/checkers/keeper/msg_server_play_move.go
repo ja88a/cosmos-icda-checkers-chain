@@ -19,6 +19,11 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
 
+	// Check that the game has not finished yet
+	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
+		return nil, types.ErrGameFinished
+	}
+
 	// Check if legitimate player
 	isBlack := storedGame.Black == msg.Creator
 	isRed := storedGame.Red == msg.Creator
@@ -59,17 +64,26 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		return nil, sdkerrors.Wrapf(types.ErrWrongMove, moveErr.Error())
 	}
 
+	// EFFECT - Register the winner, if any
+	storedGame.Winner = rules.PieceStrings[game.Winner()]
+
 	// Send the game back to the tail because it was freshly updated
 	systemInfo, found := k.Keeper.GetSystemInfo(ctx)
 	if !found {
 		panic("SystemInfo not found")
 	}
-	k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
+	lastBoard := game.String()
+	if storedGame.Winner == rules.PieceStrings[rules.NO_PLAYER] {
+		k.Keeper.SendToFifoTail(ctx, &storedGame, &systemInfo)
+		storedGame.Board = lastBoard
+	} else {
+		k.Keeper.RemoveFromFifo(ctx, &storedGame, &systemInfo)
+		storedGame.Board = ""
+	}
 
 	// EFFECTS - Prepare & store
 	storedGame.MoveCount++
 	storedGame.Deadline = types.FormatDeadline(types.GetNextDeadline(ctx))
-	storedGame.Board = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
 	k.Keeper.SetStoredGame(ctx, storedGame)
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
@@ -82,6 +96,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 			sdk.NewAttribute(types.MovePlayedEventCapturedX, strconv.FormatInt(int64(captured.X), 10)),
 			sdk.NewAttribute(types.MovePlayedEventCapturedY, strconv.FormatInt(int64(captured.Y), 10)),
 			sdk.NewAttribute(types.MovePlayedEventWinner, rules.PieceStrings[game.Winner()]),
+			sdk.NewAttribute(types.MovePlayedEventBoard, lastBoard),
 		),
 	)
 

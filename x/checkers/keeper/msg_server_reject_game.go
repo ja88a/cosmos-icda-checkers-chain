@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	"github.com/alice/checkers/x/checkers/rules"
 	"github.com/alice/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -17,6 +18,11 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "%s", msg.GameIndex)
 	}
 
+	// Check if game's already finished
+	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
+	   return nil, types.ErrGameFinished
+	}
+	
 	// Check if still possible to reject, plyer has not played once yet
 	// Note: player with the color black plays first
 	if storedGame.Black == msg.Creator {
