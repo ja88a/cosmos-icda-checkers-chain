@@ -50,38 +50,38 @@ func (storedGame StoredGame) Validate() (err error) {
 }
 
 func (storedGame *StoredGame) GetDeadlineAsTime() (deadline time.Time, err error) {
-    deadline, errDeadline := time.Parse(DeadlineLayout, storedGame.Deadline)
-    return deadline, sdkerrors.Wrapf(errDeadline, ErrInvalidDeadline.Error(), storedGame.Deadline)
+	deadline, errDeadline := time.Parse(DeadlineLayout, storedGame.Deadline)
+	return deadline, sdkerrors.Wrapf(errDeadline, ErrInvalidDeadline.Error(), storedGame.Deadline)
 }
 
 func FormatDeadline(deadline time.Time) string {
-    return deadline.UTC().Format(DeadlineLayout)
+	return deadline.UTC().Format(DeadlineLayout)
 }
 
 func GetNextDeadline(ctx sdk.Context) time.Time {
-    return ctx.BlockTime().Add(MaxTurnDuration)
+	return ctx.BlockTime().Add(MaxTurnDuration)
 }
 
 func (storedGame StoredGame) GetPlayerAddress(color string) (address sdk.AccAddress, found bool, err error) {
-    black, err := storedGame.GetBlackAddress()
-    if err != nil {
-        return nil, false, err
-    }
-    red, err := storedGame.GetRedAddress()
-    if err != nil {
-        return nil, false, err
-    }
-    address, found = map[string]sdk.AccAddress{
-        rules.PieceStrings[rules.BLACK_PLAYER]: black,
-        rules.PieceStrings[rules.RED_PLAYER]:   red,
-    }[color]
-    return address, found, nil
+	black, err := storedGame.GetBlackAddress()
+	if err != nil {
+		return nil, false, err
+	}
+	red, err := storedGame.GetRedAddress()
+	if err != nil {
+		return nil, false, err
+	}
+	address, found = map[string]sdk.AccAddress{
+		rules.PieceStrings[rules.BLACK_PLAYER]: black,
+		rules.PieceStrings[rules.RED_PLAYER]:   red,
+	}[color]
+	return address, found, nil
 }
 
 func (storedGame StoredGame) GetWinnerAddress() (address sdk.AccAddress, found bool, err error) {
-    return storedGame.GetPlayerAddress(storedGame.Winner)
+	return storedGame.GetPlayerAddress(storedGame.Winner)
 }
 
 func (storedGame *StoredGame) GetWagerCoin() (wager sdk.Coin) {
-    return sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(int64(storedGame.Wager)))
+	return sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(int64(storedGame.Wager)))
 }

@@ -391,7 +391,7 @@ func New(
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
 	app.CheckersKeeper = *checkersmodulekeeper.NewKeeper(
-		app.BankKeeper, 
+		app.BankKeeper,
 		appCodec,
 		keys[checkersmoduletypes.StoreKey],
 		keys[checkersmoduletypes.MemStoreKey],

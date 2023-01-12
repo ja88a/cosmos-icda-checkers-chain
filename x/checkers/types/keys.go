@@ -48,9 +48,9 @@ const (
 )
 
 const (
-    GameRejectedEventType      = "game-rejected"
-    GameRejectedEventCreator   = "creator"
-    GameRejectedEventGameIndex = "game-index"
+	GameRejectedEventType      = "game-rejected"
+	GameRejectedEventCreator   = "creator"
+	GameRejectedEventGameIndex = "game-index"
 )
 
 const (
@@ -58,23 +58,23 @@ const (
 )
 
 const (
-    MaxTurnDuration = time.Duration(5 * 60 * 1000_000_000) // TODO Fix 5 min // (24 * 3_600 * 1000_000_000) // 1 day
-    DeadlineLayout  = "2006-01-02 15:04:05.999999999 +0000 UTC"
+	MaxTurnDuration = time.Duration(5 * 60 * 1000_000_000) // TODO Fix 5 min // (24 * 3_600 * 1000_000_000) // 1 day
+	DeadlineLayout  = "2006-01-02 15:04:05.999999999 +0000 UTC"
 )
 
 const (
-    GameForfeitedEventType      = "game-forfeited"
-    GameForfeitedEventGameIndex = "game-index"
-    GameForfeitedEventWinner    = "winner"
-    GameForfeitedEventBoard     = "board"
+	GameForfeitedEventType      = "game-forfeited"
+	GameForfeitedEventGameIndex = "game-index"
+	GameForfeitedEventWinner    = "winner"
+	GameForfeitedEventBoard     = "board"
 )
 
 const (
-    GameCreatedEventWager = "wager"
+	GameCreatedEventWager = "wager"
 )
 
 const (
-    CreateGameGas       = 15000
-    PlayMoveGas         = 1000
-    RejectGameRefundGas = 14000
+	CreateGameGas       = 15000
+	PlayMoveGas         = 1000
+	RejectGameRefundGas = 14000
 )

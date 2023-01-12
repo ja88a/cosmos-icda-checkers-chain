@@ -17,6 +17,9 @@ scaffold-init:
 	# ignite scaffold chain github.com/alice/checkers
 	ignite scaffold chain github.com/$(AUTHOR)/$(REPO)
 
+chown:
+	sudo chown -R $(whoami):$(whoami) ~/dev/workspace/$(REPO)/*
+
 docker-scaffold-init:
 	echo CAUTION: Command to be initiated only once: when the repo is not created yet! Uncomment last command and initiate that call in the parent directory of the repo to be created.
 	# docker run --rm -it -v $(PWD):/checkers -w /checkers -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 --name checkers-tmp checkers_i ignite scaffold chain github.com/ja88a/cosmos-icda-checkers
@@ -84,6 +87,6 @@ shexport-addr:
 	export alice2=$(ALICE)
 	@echo ALICE: $(alice2)
 
-	#export bob=$(checkersd keys show bob -a)
+	export bob=$(checkersd keys show bob -a)
 	export bob=$(BOB)
 	@echo bob: $(BOB)

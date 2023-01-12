@@ -96,7 +96,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
 	ctx.GasMeter().ConsumeGas(types.PlayMoveGas, "Play a move")
-	
+
 	// INTERACT - emit event
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.MovePlayedEventType,

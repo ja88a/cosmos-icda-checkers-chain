@@ -20,9 +20,9 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 
 	// Check if game's already finished
 	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
-	   return nil, types.ErrGameFinished
+		return nil, types.ErrGameFinished
 	}
-	
+
 	// Check if still possible to reject, plyer has not played once yet
 	// Note: player with the color black plays first
 	if storedGame.Black == msg.Creator {

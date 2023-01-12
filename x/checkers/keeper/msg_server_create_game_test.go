@@ -369,15 +369,15 @@ func TestSavedCreatedDeadlineIsParseable(t *testing.T) {
 }
 
 func TestCreate1GameConsumedGas(t *testing.T) {
-    msgSrvr, _, context := setupMsgServerCreateGame(t)
-    ctx := sdk.UnwrapSDKContext(context)
-    before := ctx.GasMeter().GasConsumed()
-    msgSrvr.CreateGame(context, &types.MsgCreateGame{
-        Creator: alice,
-        Black:   bob,
-        Red:     carol,
-        Wager:   45,
-    })
-    after := ctx.GasMeter().GasConsumed()
-    require.GreaterOrEqual(t, after, before+25_000)
+	msgSrvr, _, context := setupMsgServerCreateGame(t)
+	ctx := sdk.UnwrapSDKContext(context)
+	before := ctx.GasMeter().GasConsumed()
+	msgSrvr.CreateGame(context, &types.MsgCreateGame{
+		Creator: alice,
+		Black:   bob,
+		Red:     carol,
+		Wager:   45,
+	})
+	after := ctx.GasMeter().GasConsumed()
+	require.GreaterOrEqual(t, after, before+25_000)
 }
