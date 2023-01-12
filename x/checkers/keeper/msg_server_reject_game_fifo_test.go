@@ -9,12 +9,14 @@ import (
 )
 
 func TestRejectSecondGameHasSavedFifo(t *testing.T) {
-	msgServer, keeper, context := setupMsgServerWithOneGameForRejectGame(t)
+	msgServer, keeper, context, ctrl, _ := setupMsgServerWithOneGameForRejectGame(t)
 	ctx := sdk.UnwrapSDKContext(context)
+	defer ctrl.Finish()
 	msgServer.CreateGame(context, &types.MsgCreateGame{
 		Creator: bob,
 		Black:   carol,
 		Red:     alice,
+		Wager:   46,
 	})
 	msgServer.RejectGame(context, &types.MsgRejectGame{
 		Creator:   carol,
@@ -38,23 +40,27 @@ func TestRejectSecondGameHasSavedFifo(t *testing.T) {
 		MoveCount:   uint64(0),
 		BeforeIndex: "-1",
 		AfterIndex:  "-1",
-		Deadline:  	 types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
-		Winner:    	 "*",
+		Deadline:    types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
+		Winner:      "*",
+		Wager:       46,
 	}, game2)
 }
 
 func TestRejectMiddleGameHasSavedFifo(t *testing.T) {
-	msgServer, keeper, context := setupMsgServerWithOneGameForRejectGame(t)
+	msgServer, keeper, context, ctrl, _ := setupMsgServerWithOneGameForRejectGame(t)
 	ctx := sdk.UnwrapSDKContext(context)
+	defer ctrl.Finish()
 	msgServer.CreateGame(context, &types.MsgCreateGame{
 		Creator: bob,
 		Black:   carol,
 		Red:     alice,
+		Wager:   46,
 	})
 	msgServer.CreateGame(context, &types.MsgCreateGame{
 		Creator: carol,
 		Black:   alice,
 		Red:     bob,
+		Wager:   47,
 	})
 	msgServer.RejectGame(context, &types.MsgRejectGame{
 		Creator:   carol,
@@ -78,8 +84,9 @@ func TestRejectMiddleGameHasSavedFifo(t *testing.T) {
 		MoveCount:   uint64(0),
 		BeforeIndex: "-1",
 		AfterIndex:  "3",
-		Deadline:  	 types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
-		Winner:    	 "*",
+		Deadline:    types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
+		Winner:      "*",
+		Wager:       45,
 	}, game1)
 	game3, found := keeper.GetStoredGame(ctx, "3")
 	require.True(t, found)
@@ -92,7 +99,8 @@ func TestRejectMiddleGameHasSavedFifo(t *testing.T) {
 		MoveCount:   uint64(0),
 		BeforeIndex: "1",
 		AfterIndex:  "-1",
-		Deadline:  	 types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
-		Winner:    	 "*",
+		Deadline:    types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
+		Winner:      "*",
+		Wager:       47,
 	}, game3)
 }

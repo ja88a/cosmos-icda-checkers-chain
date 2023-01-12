@@ -71,6 +71,10 @@ docker-init-gui:
 docker-run-gui:
 	docker exec -it $(DOCKER_LABEL) bash -c "cd vue && npm run dev -- --host"
 
+docker-mockgen:
+	docker exec -it $(DOCKER_LABEL) mockgen -source=x/checkers/types/expected_keepers.go -package testutil -destination=x/checkers/testutil/expected_keepers_mocks.go 
+
+
 ALICE = $(checkersd keys show alice -a)
 BOB = $(checkersd keys show bob -a)
 
