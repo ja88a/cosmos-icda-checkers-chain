@@ -34,6 +34,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		Deadline:    types.FormatDeadline(types.GetNextDeadline(ctx)),
 		Winner:      rules.PieceStrings[rules.NO_PLAYER],
 		Wager:       msg.Wager,
+		Denom:       msg.Denom,
 	}
 
 	// Validate the game inputs
@@ -60,6 +61,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 			sdk.NewAttribute(types.GameCreatedEventBlack, msg.Black),
 			sdk.NewAttribute(types.GameCreatedEventRed, msg.Red),
 			sdk.NewAttribute(types.GameCreatedEventWager, strconv.FormatUint(msg.Wager, 10)),
+			sdk.NewAttribute(types.GameCreatedEventDenom, msg.Denom),
 		),
 	)
 
