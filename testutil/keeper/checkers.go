@@ -35,14 +35,18 @@ func CheckersKeeperWithMocks(t testing.TB, bank *testutil.MockBankEscrowKeeper) 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
+	leaderboardKeeper,_ := LeaderboardKeeper(t);
+
 	paramsSubspace := typesparams.NewSubspace(cdc,
 		types.Amino,
 		storeKey,
 		memStoreKey,
 		"CheckersParams",
 	)
+	
 	k := keeper.NewKeeper(
 		bank,
+		*leaderboardKeeper,
 		cdc,
 		storeKey,
 		memStoreKey,

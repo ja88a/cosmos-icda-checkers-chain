@@ -372,21 +372,23 @@ paths:
                 type: object
                 properties:
                   playerInfo:
-                    type: object
-                    properties:
-                      index:
-                        type: string
-                      wonCount:
-                        type: string
-                        format: uint64
-                      lostCount:
-                        type: string
-                        format: uint64
-                      forfeitedCount:
-                        type: string
-                        format: uint64
-                      dateUpdated:
-                        type: string
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        index:
+                          type: string
+                        wonCount:
+                          type: string
+                          format: uint64
+                        lostCount:
+                          type: string
+                          format: uint64
+                        forfeitedCount:
+                          type: string
+                          format: uint64
+                        dateUpdated:
+                          type: string
         default:
           description: An unexpected error response.
           schema:
@@ -31724,21 +31726,23 @@ definitions:
     type: object
     properties:
       playerInfo:
-        type: object
-        properties:
-          index:
-            type: string
-          wonCount:
-            type: string
-            format: uint64
-          lostCount:
-            type: string
-            format: uint64
-          forfeitedCount:
-            type: string
-            format: uint64
-          dateUpdated:
-            type: string
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            wonCount:
+              type: string
+              format: uint64
+            lostCount:
+              type: string
+              format: uint64
+            forfeitedCount:
+              type: string
+              format: uint64
+            dateUpdated:
+              type: string
   alice.checkers.leaderboard.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -31811,21 +31815,23 @@ definitions:
         type: object
         properties:
           playerInfo:
-            type: object
-            properties:
-              index:
-                type: string
-              wonCount:
-                type: string
-                format: uint64
-              lostCount:
-                type: string
-                format: uint64
-              forfeitedCount:
-                type: string
-                format: uint64
-              dateUpdated:
-                type: string
+            type: array
+            items:
+              type: object
+              properties:
+                index:
+                  type: string
+                wonCount:
+                  type: string
+                  format: uint64
+                lostCount:
+                  type: string
+                  format: uint64
+                forfeitedCount:
+                  type: string
+                  format: uint64
+                dateUpdated:
+                  type: string
   alice.checkers.leaderboard.QueryGetPlayerInfoResponse:
     type: object
     properties:
