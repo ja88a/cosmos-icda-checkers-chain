@@ -6,6 +6,7 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 
 	"github.com/alice/checkers/x/checkers/types"
+	leaderBoardKeeper "github.com/alice/checkers/x/leaderboard/keeper"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -14,6 +15,7 @@ import (
 type (
 	Keeper struct {
 		bank       types.BankEscrowKeeper
+		board      leaderBoardKeeper.Keeper
 		cdc        codec.BinaryCodec
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
@@ -23,6 +25,7 @@ type (
 
 func NewKeeper(
 	bank types.BankEscrowKeeper,
+	board leaderBoardKeeper.Keeper,
 	cdc codec.BinaryCodec,
 	storeKey,
 	memKey sdk.StoreKey,
@@ -36,6 +39,7 @@ func NewKeeper(
 
 	return &Keeper{
 		bank:       bank,
+		board:      board,
 		cdc:        cdc,
 		storeKey:   storeKey,
 		memKey:     memKey,
