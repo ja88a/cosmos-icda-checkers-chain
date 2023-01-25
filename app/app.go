@@ -398,15 +398,14 @@ func New(
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
 	app.CheckersKeeper = *checkersmodulekeeper.NewKeeper(
-        app.BankKeeper,
-        app.LeaderboardKeeper,
-        appCodec,
-        keys[checkersmoduletypes.StoreKey],
-        keys[checkersmoduletypes.MemStoreKey],
-        app.GetSubspace(checkersmoduletypes.ModuleName),
-    )
-    checkersModule := checkersmodule.NewAppModule(appCodec, app.CheckersKeeper, app.AccountKeeper, app.BankKeeper)
-
+		app.BankKeeper,
+		app.LeaderboardKeeper,
+		appCodec,
+		keys[checkersmoduletypes.StoreKey],
+		keys[checkersmoduletypes.MemStoreKey],
+		app.GetSubspace(checkersmoduletypes.ModuleName),
+	)
+	checkersModule := checkersmodule.NewAppModule(appCodec, app.CheckersKeeper, app.AccountKeeper, app.BankKeeper)
 
 	scopedLeaderboardKeeper := app.CapabilityKeeper.ScopeToModule(leaderboardmoduletypes.ModuleName)
 	app.ScopedLeaderboardKeeper = scopedLeaderboardKeeper

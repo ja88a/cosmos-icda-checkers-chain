@@ -26,7 +26,6 @@ var (
 	ErrCannotRefundWager       = sdkerrors.Register(ModuleName, 1115, "cannot refund wager to: %s")
 	ErrCannotPayWinnings       = sdkerrors.Register(ModuleName, 1116, "cannot pay winnings to winner: %s")
 	ErrNotInRefundState        = sdkerrors.Register(ModuleName, 1117, "game is not in a state to refund, move count: %d")
-	ErrThereIsNoWinner		   = sdkerrors.Register(ModuleName, 1118, "no winner found")
-	ErrWinnerNotParseable 	= sdkerrors.Register(ModuleName, 1119, "unsupported winner")
-
+	ErrThereIsNoWinner         = sdkerrors.Register(ModuleName, 1118, "no winner found")
+	ErrWinnerNotParseable      = sdkerrors.Register(ModuleName, 1119, "unsupported winner")
 )
