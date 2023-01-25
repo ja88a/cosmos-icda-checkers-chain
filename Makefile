@@ -24,8 +24,12 @@ chown:
 docker-scaffold-init:
 	@echo CAUTION: Command to be initiated only once: when the repo is not created yet! Uncomment last command and initiate that call in the parent directory of the repo to be created.
 	@# docker run --rm -it -v $(PWD):/checkers -w /checkers -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 --name checkers-tmp checkers_i ignite scaffold chain github.com/ja88a/cosmos-icda-checkers
-	docker run --rm -it -v $(PWD):/$(WORK_DIR) -w /$(WORK_DIR) -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 --name $(DOCKER_LABEL)-tmp $(DOCKER_LABEL)_i ignite scaffold chain github.com/$(AUTHOR)/$(REPO)
-	sudo chown -R $(whoami):$(whoami) ./$(REPO)
+	docker run --rm -it \
+		-v $(PWD):/$(WORK_DIR) \
+		-w /$(WORK_DIR) \
+		-p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 \
+		--name $(DOCKER_LABEL)-tmp $(DOCKER_LABEL)_i \
+		ignite scaffold chain github.com/$(AUTHOR)/$(REPO)
 
 #	---------------------------------------------------------------
 #
