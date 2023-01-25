@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"errors"
 	"context"
 
 	"github.com/alice/checkers/x/leaderboard/types"
@@ -11,12 +12,24 @@ import (
 func (k msgServer) SendCandidate(goCtx context.Context, msg *types.MsgSendCandidate) (*types.MsgSendCandidateResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: logic before transmitting the packet
-
 	// Construct the packet
 	var packet types.CandidatePacketData
 
-	packet.PlayerInfo = msg.PlayerInfo
+	allPlayerInfo := k.GetAllPlayerInfo(ctx)
+
+	// Get the candidate from the stored list of players
+    found_in_player_list:= false
+    for i := range allPlayerInfo {
+        if allPlayerInfo[i].Index == msg.Creator {
+            packet.PlayerInfo = &allPlayerInfo[i];
+            found_in_player_list = true
+            break
+        }
+    }
+
+    if !found_in_player_list {
+        return nil, errors.New("candidate player not found")
+    }
 
 	// Transmit the packet
 	err := k.TransmitCandidatePacket(
