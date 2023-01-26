@@ -126,7 +126,8 @@ mock-expected-keepers:
 	mockgen -source=x/checkers/types/expected_keepers.go \
 		-package testutil \
 		-destination=x/checkers/testutil/expected_keepers_mocks.go 
-
+	@#mockgen -source=x/checkers/types/expected_keepers.go -destination=testutil/mock_types/expected_keepers.go
+	
 #
 # TS Client computations
 #
