@@ -86,6 +86,9 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		k.Keeper.RemoveFromFifo(ctx, &storedGame, &systemInfo)
 		storedGame.Board = ""
 		k.Keeper.MustPayWinnings(ctx, &storedGame)
+
+		// Register a win
+		k.Keeper.MustRegisterPlayerWin(ctx, &storedGame)
 	}
 
 	// EFFECTS - Prepare & store

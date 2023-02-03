@@ -24,8 +24,12 @@ chown:
 docker-scaffold-init:
 	@echo CAUTION: Command to be initiated only once: when the repo is not created yet! Uncomment last command and initiate that call in the parent directory of the repo to be created.
 	@# docker run --rm -it -v $(PWD):/checkers -w /checkers -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 --name checkers-tmp checkers_i ignite scaffold chain github.com/ja88a/cosmos-icda-checkers
-	docker run --rm -it -v $(PWD):/$(WORK_DIR) -w /$(WORK_DIR) -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 --name $(DOCKER_LABEL)-tmp $(DOCKER_LABEL)_i ignite scaffold chain github.com/$(AUTHOR)/$(REPO)
-	sudo chown -R $(whoami):$(whoami) ./$(REPO)
+	docker run --rm -it \
+		-v $(PWD):/$(WORK_DIR) \
+		-w /$(WORK_DIR) \
+		-p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 \
+		--name $(DOCKER_LABEL)-tmp $(DOCKER_LABEL)_i \
+		ignite scaffold chain github.com/$(AUTHOR)/$(REPO)
 
 #	---------------------------------------------------------------
 #
@@ -122,7 +126,8 @@ mock-expected-keepers:
 	mockgen -source=x/checkers/types/expected_keepers.go \
 		-package testutil \
 		-destination=x/checkers/testutil/expected_keepers_mocks.go 
-
+	@#mockgen -source=x/checkers/types/expected_keepers.go -destination=testutil/mock_types/expected_keepers.go
+	
 #
 # TS Client computations
 #
@@ -179,3 +184,16 @@ shexport-addr:
 	export bob=$(checkersd keys show bob -a)
 	export bob=$(BOB)
 	@echo bob: $(BOB)
+
+#
+# Building the chain for target production platforms
+#
+build-all:
+    GOOS=linux GOARCH=amd64 go build -o ./build/$(REPO)-linux-amd64 ./cmd/$(APP_EXEC)/main.go
+    GOOS=linux GOARCH=arm64 go build -o ./build/$(REPO)-linux-arm64 ./cmd/$(APP_EXEC)/main.go
+    GOOS=darwin GOARCH=amd64 go build -o ./build/$(REPO)-darwin-amd64 ./cmd/$(APP_EXEC)/main.go
+
+do-checksum:
+    cd build && sha256sum $(REPO)-linux-amd64 $(REPO)-linux-arm64 $(REPO)-darwin-amd64 > $(REPO)_checksum
+
+build-with-checksum: build-all do-checksum
