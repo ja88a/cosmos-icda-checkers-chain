@@ -445,19 +445,6 @@ func NewApp(
 	)
 	checkersModule := checkersmodule.NewAppModule(appCodec, app.CheckersKeeper, app.AccountKeeper, app.BankKeeper)
 
-	scopedLeaderboardKeeper := app.CapabilityKeeper.ScopeToModule(leaderboardmoduletypes.ModuleName)
-	app.ScopedLeaderboardKeeper = scopedLeaderboardKeeper
-	app.LeaderboardKeeper = *leaderboardmodulekeeper.NewKeeper(
-		appCodec,
-		keys[leaderboardmoduletypes.StoreKey],
-		keys[leaderboardmoduletypes.MemStoreKey],
-		app.GetSubspace(leaderboardmoduletypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
-		scopedLeaderboardKeeper,
-	)
-	leaderboardModule := leaderboardmodule.NewAppModule(appCodec, app.LeaderboardKeeper, app.AccountKeeper, app.BankKeeper)
-
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it

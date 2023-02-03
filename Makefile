@@ -189,11 +189,11 @@ shexport-addr:
 # Building the chain for target production platforms
 #
 build-all:
-    GOOS=linux GOARCH=amd64 go build -o ./build/$(REPO)-linux-amd64 ./cmd/$(APP_EXEC)/main.go
-    GOOS=linux GOARCH=arm64 go build -o ./build/$(REPO)-linux-arm64 ./cmd/$(APP_EXEC)/main.go
-    GOOS=darwin GOARCH=amd64 go build -o ./build/$(REPO)-darwin-amd64 ./cmd/$(APP_EXEC)/main.go
+	GOOS=linux GOARCH=amd64 go build -o ./build/$(REPO)-linux-amd64 ./cmd/$(APP_EXEC)/main.go
+	GOOS=linux GOARCH=arm64 go build -o ./build/$(REPO)-linux-arm64 ./cmd/$(APP_EXEC)/main.go
+	GOOS=darwin GOARCH=amd64 go build -o ./build/$(REPO)-darwin-amd64 ./cmd/$(APP_EXEC)/main.go
 
 do-checksum:
-    cd build && sha256sum $(REPO)-linux-amd64 $(REPO)-linux-arm64 $(REPO)-darwin-amd64 > $(REPO)_checksum
+	cd build && sha256sum $(REPO)-linux-amd64 $(REPO)-linux-arm64 $(REPO)-darwin-amd64 > $(REPO)_checksum
 
 build-with-checksum: build-all do-checksum
