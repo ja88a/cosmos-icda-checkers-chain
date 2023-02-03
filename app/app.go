@@ -254,6 +254,31 @@ func New(
 	appOpts servertypes.AppOptions,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) cosmoscmd.App {
+	return NewApp(
+		logger,
+		db,
+		traceStore,
+		loadLatest,
+		skipUpgradeHeights,
+		homePath,
+		invCheckPeriod,
+		encodingConfig,
+		appOpts,
+		baseAppOptions...)
+}
+
+func NewApp(
+	logger log.Logger,
+	db dbm.DB,
+	traceStore io.Writer,
+	loadLatest bool,
+	skipUpgradeHeights map[int64]bool,
+	homePath string,
+	invCheckPeriod uint,
+	encodingConfig cosmoscmd.EncodingConfig,
+	appOpts servertypes.AppOptions,
+	baseAppOptions ...func(*baseapp.BaseApp),
+) *App {
 	appCodec := encodingConfig.Marshaler
 	cdc := encodingConfig.Amino
 	interfaceRegistry := encodingConfig.InterfaceRegistry
@@ -390,8 +415,22 @@ func New(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
+	scopedLeaderboardKeeper := app.CapabilityKeeper.ScopeToModule(leaderboardmoduletypes.ModuleName)
+	app.ScopedLeaderboardKeeper = scopedLeaderboardKeeper
+	app.LeaderboardKeeper = *leaderboardmodulekeeper.NewKeeper(
+		appCodec,
+		keys[leaderboardmoduletypes.StoreKey],
+		keys[leaderboardmoduletypes.MemStoreKey],
+		app.GetSubspace(leaderboardmoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedLeaderboardKeeper,
+	)
+	leaderboardModule := leaderboardmodule.NewAppModule(appCodec, app.LeaderboardKeeper, app.AccountKeeper, app.BankKeeper)
+
 	app.CheckersKeeper = *checkersmodulekeeper.NewKeeper(
 		app.BankKeeper,
+		app.LeaderboardKeeper,
 		appCodec,
 		keys[checkersmoduletypes.StoreKey],
 		keys[checkersmoduletypes.MemStoreKey],
