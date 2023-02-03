@@ -35,7 +35,8 @@ const (
 	GameCreatedEventGameIndex = "game-index"       // What game is relevant
 	GameCreatedEventBlack     = "black"            // Is it relevant to me?
 	GameCreatedEventRed       = "red"              // Is it relevant to me?
-	GameCreatedEventDenom 	  = "denom"
+	GameCreatedEventWager     = "wager"
+	GameCreatedEventDenom     = "denom"
 )
 
 const (
@@ -59,7 +60,7 @@ const (
 )
 
 const (
-	MaxTurnDuration = time.Duration(5 * 60 * 1000_000_000) // TODO Fix 5 min // (24 * 3_600 * 1000_000_000) // 1 day
+	MaxTurnDuration = time.Duration(24 * 3_600 * 1000_000_000) // TODO Fix 5 min // (24 * 3_600 * 1000_000_000) // 1 day
 	DeadlineLayout  = "2006-01-02 15:04:05.999999999 +0000 UTC"
 )
 
@@ -68,10 +69,6 @@ const (
 	GameForfeitedEventGameIndex = "game-index"
 	GameForfeitedEventWinner    = "winner"
 	GameForfeitedEventBoard     = "board"
-)
-
-const (
-	GameCreatedEventWager = "wager"
 )
 
 const (

@@ -69,5 +69,4 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	return &types.MsgCreateGameResponse{
 		GameIndex: newIndex,
 	}, nil
-	// return &types.MsgCreateGameResponse{}, nil
 }
