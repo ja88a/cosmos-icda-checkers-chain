@@ -1,5 +1,7 @@
 # checkers
-**checkers** is a blockchain-based checkers game, built using Cosmos SDK and Tendermint, created with [Ignite CLI](https://ignite.com/cli).
+A blockchain-based checkers game, built using Cosmos SDK and Tendermint, created with [Ignite CLI](https://ignite.com/cli) and supporting IBC messages.
+
+A complete technical sample of interchain capabilities, developped in the context of the *Interchain Developer Academy*, 2023 c03.
 
 ## Get started
 
